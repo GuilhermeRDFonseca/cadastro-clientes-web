@@ -1,0 +1,132 @@
+
+1) Função que pega os clientes salvos
+function obterClientes() {
+  return JSON.parse(localStorage.getItem("clientes") || "[]");
+}
+
+
+O que acontece aqui:
+
+localStorage.getItem("clientes") → Tenta buscar a lista de clientes gravada no navegador.
+
+Se existir → ele pega essa lista.
+
+Se não existir ainda → usamos "[]" (lista vazia).
+
+JSON.parse(...) → transforma texto em objeto JavaScript.
+
+→ Em resumo:
+Essa função sempre retorna a lista atual de clientes.
+
+2) Função que grava os clientes
+function salvarClientes(clientes) {
+  localStorage.setItem("clientes", JSON.stringify(clientes));
+}
+
+
+Explicação:
+
+JSON.stringify(clientes) → transforma o objeto em texto.
+
+localStorage.setItem("clientes", ...) → salva no navegador.
+
+→ É o mesmo princípio de “Salvar no Banco de Dados”, só que local por enquanto.
+
+3) Função que cadastra um novo cliente
+function cadastrarCliente(event) {
+  event.preventDefault();
+  const nome = document.getElementById("nome").value;
+  const email = document.getElementById("email").value;
+  const telefone = document.getElementById("telefone").value;
+
+
+event.preventDefault() → impede o formulário de recarregar a página.
+
+document.getElementById(...) → pega o valor digitado nos campos.
+
+  const clientes = obterClientes();
+  clientes.push({ nome, email, telefone });
+  salvarClientes(clientes);
+
+
+obterClientes() → pega a lista atual.
+
+push(...) → adiciona o novo cliente.
+
+salvarClientes(...) → salva no navegador.
+
+  alert("Cliente cadastrado com sucesso!");
+  window.location.href = "listar.html";
+}
+
+
+alert(...) → aviso na tela.
+
+window.location.href → te envia para a página de listagem após cadastrar.
+
+→ Essa é a lógica do Cadastrar Cliente completa.
+
+4) Função que lista os clientes
+function listarClientes() {
+  const clientes = obterClientes();
+  const tabela = document.getElementById("tabelaClientes");
+
+
+Pega os clientes do armazenamento.
+
+Acha a <tbody> da tabela onde vamos colocar os nomes.
+
+  if (!tabela) return;
+  tabela.innerHTML = "";
+
+
+Se a tabela não existe (por exemplo se você abriu cadastrar.html), não faz nada.
+
+Limpa a tabela antes de preencher de novo.
+
+  clientes.forEach((cliente, index) => {
+    tabela.innerHTML += `
+      <tr>
+        <td>${cliente.nome}</td>
+        <td>${cliente.email}</td>
+        <td>${cliente.telefone}</td>
+        <td>
+          <button onclick="excluirCliente(${index})">Excluir</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+
+Para cada cliente:
+
+cria uma linha <tr>
+
+mostra os dados
+
+cria um botão que chama excluirCliente(index)
+
+5) Função que exclui um cliente
+function excluirCliente(index) {
+  const clientes = obterClientes();
+  clientes.splice(index, 1);
+  salvarClientes(clientes);
+  listarClientes();
+}
+
+
+splice(index, 1) → remove 1 item da lista.
+
+Salva de novo.
+
+Atualiza a tabela.
+
+6) Linha final
+listarClientes();
+
+
+Isso faz com que quando a página listar.html abrir, a tabela seja preenchida automaticamente.
+
+
+“A aplicação foi construída utilizando HTML para estruturar as telas, CSS para estilização e JavaScript para a lógica. Os dados foram armazenados no LocalStorage do navegador(por enquanto), o que permite salvar, listar e excluir clientes sem necessidade de servidor. O LocalStorage guarda dados no formato texto, por isso utilizamos JSON.stringify e JSON.parse para converter entre texto e objeto.”

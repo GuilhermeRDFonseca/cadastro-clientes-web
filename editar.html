@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Cliente</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Editar Cliente</h1>
+    </header>
+
+    <div class="container">
+        <form onsubmit="salvarEdicao(event)">
+            <label>Nome:</label><br>
+            <input type="text" id="nome" required><br><br>
+
+            <label>Email:</label><br>
+            <input type="email" id="email" required><br><br>
+
+            <label>Telefone:</label><br>
+            <input type="text" id="telefone" required oninput="mascararTelefone(this)">
+            <br><br>
+
+            <button type="submit" class="button">Salvar Alterações</button>
+        </form>
+
+        <br>
+        <a class="button" href="listar.html">Voltar</a>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        carregarEdicao(); // ✅ chama a função para preencher os campos ao abrir
+    </script>
+</body>
+
+</html>
